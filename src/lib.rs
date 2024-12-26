@@ -84,6 +84,7 @@
 #![deny(missing_docs)]
 
 pub mod client;
+pub mod application;
 mod http;
 mod structs;
 
