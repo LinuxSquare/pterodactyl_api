@@ -108,7 +108,7 @@ impl Application<'_> {
       .map(|user|user.attributes)
   }
 
-  /// Updates the user by it's id
+  /// Updates the user by its id
   pub async fn update_user(
     &self,
     id: u32,
