@@ -53,27 +53,24 @@ pub struct User {
   pub updated_at: OffsetDateTime
 }
 
-impl Application<'_> {
+impl Application {
   /// Retrieves all users
   pub async fn list_users(&self) -> crate::Result<Vec<User>> {
-    self.client
-      .request::<PteroList<User>>(Method::GET, &format!("users"))
+    self.request::<PteroList<User>>(Method::GET, &format!("users"))
       .await
       .map(|users| users.data)
   }
 
   /// Retrieves the specified user
   pub async fn get_user(&self, id: u32) -> crate::Result<User> {
-    self.client
-      .request::<PteroObject<User>>(Method::GET, &format!("users/{}", id))
+    self.request::<PteroObject<User>>(Method::GET, &format!("users/{}", id))
       .await
       .map(|user|user.attributes)
   }
   
   /// Retrieves the specified user by its external ID
   pub async fn get_user_external(&self, external_id: String) -> crate::Result<User> {
-    self.client
-    .request::<PteroObject<User>>(Method::GET, &format!("users/{}", external_id))
+    self.request::<PteroObject<User>>(Method::GET, &format!("users/{}", external_id))
     .await
     .map(|user|user.attributes)
   }
@@ -93,8 +90,7 @@ impl Application<'_> {
       first_name: String,
       last_name: String
     }
-    self.client
-      .request_with_body::<PteroObject<User>, _>(
+    self.request_with_body::<PteroObject<User>, _>(
         Method::POST, 
         &format!("users"), 
         &AddUserBody {
@@ -128,8 +124,7 @@ impl Application<'_> {
       language: String,
       password: String
     }
-    self.client
-      .request_with_body::<PteroObject<User>, _>(
+    self.request_with_body::<PteroObject<User>, _>(
         Method::PATCH, 
         &format!("users/{}", id), 
         &UpdateUserBody {
@@ -147,8 +142,7 @@ impl Application<'_> {
 
   /// Removes a user from the panel
   pub async fn delete_user(&self, id: u32) -> crate::Result<()> {
-    self.client
-      .request::<EmptyBody>(Method::DELETE, &format!("users/{}", id))
+    self.request::<EmptyBody>(Method::DELETE, &format!("users/{}", id))
       .await?;
     Ok(())
   }

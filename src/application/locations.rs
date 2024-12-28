@@ -30,19 +30,17 @@ pub struct Location {
   pub updated_at: OffsetDateTime
 }
 
-impl Application<'_> {
+impl Application {
   /// Retrieves all locations
   pub async fn list_locations(&self) -> crate::Result<Vec<Location>> {
-    self.client
-      .request::<PteroList<Location>>(Method::GET, &format!("locations"))
+    self.request::<PteroList<Location>>(Method::GET, &format!("locations"))
       .await
       .map(|locations|locations.data)
   }
 
   /// Retrieves the specified location
   pub async fn get_location(&self, id: u32) -> crate::Result<Location> {
-    self.client
-      .request::<PteroObject<Location>>(Method::GET, &format!("locations/{}", id))
+    self.request::<PteroObject<Location>>(Method::GET, &format!("locations/{}", id))
       .await
       .map(|location|location.attributes)
   }
@@ -58,8 +56,7 @@ impl Application<'_> {
       short: String,
       long: String
     }
-    self.client
-      .request_with_body::<PteroObject<Location>, _>(
+    self.request_with_body::<PteroObject<Location>, _>(
         Method::POST, 
         &format!("locations"),
         &AddLocationBody {
@@ -83,8 +80,7 @@ impl Application<'_> {
       short: String,
       long: String
     }
-    self.client
-      .request_with_body::<PteroObject<Location>, _>(
+    self.request_with_body::<PteroObject<Location>, _>(
         Method::PATCH, 
         &format!("locations/{}", id), 
         &UpdateLocationBody {
@@ -98,8 +94,7 @@ impl Application<'_> {
 
   /// Removes a location from the panel
   pub async fn delete_location(&self, id: u32) -> crate::Result<()> {
-    self.client
-      .request::<EmptyBody>(Method::DELETE, &format!("locations/{}", id))
+    self.request::<EmptyBody>(Method::DELETE, &format!("locations/{}", id))
       .await?;
     Ok(())
   }

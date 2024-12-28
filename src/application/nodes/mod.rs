@@ -79,19 +79,17 @@ pub struct Node {
   pub updated_at: OffsetDateTime
 }
 
-impl Application<'_> {
+impl Application {
   /// Retrieves all nodes
   pub async fn list_nodes(&self) -> crate::Result<Vec<Node>> {
-    self.client
-      .request::<PteroList<Node>>(Method::GET, &format!("nodes"))
+    self.request::<PteroList<Node>>(Method::GET, &format!("nodes"))
       .await
       .map(|nodes|nodes.data)
   }
 
   /// Retrieves the specified node
   pub async fn get_node(&self, id: u32) -> crate::Result<Node> {
-    self.client
-      .request::<PteroObject<Node>>(Method::GET, &format!("nodes/{}", id))
+    self.request::<PteroObject<Node>>(Method::GET, &format!("nodes/{}", id))
       .await
       .map(|node|node.attributes)
   }
@@ -128,8 +126,7 @@ impl Application<'_> {
       daemon_sftp: u32,
       daemon_listen: u32
     }
-    self.client
-      .request_with_body::<PteroObject<Node>, _>(
+    self.request_with_body::<PteroObject<Node>, _>(
         Method::POST, 
         &format!("nodes"), 
         &AddNodeBody {
@@ -186,8 +183,7 @@ impl Application<'_> {
       daemon_sftp: u32,
       daemon_listen: u32      
     }
-    self.client
-      .request_with_body::<PteroObject<Node>, _>(
+    self.request_with_body::<PteroObject<Node>, _>(
         Method::PATCH,
         &format!("nodes/{}", id),
         &UpdateNodeBody {
@@ -213,8 +209,7 @@ impl Application<'_> {
 
   /// Removes a node
   pub async fn delete_node(&self, id: u32) -> crate::Result<()> {
-    self.client
-      .request::<EmptyBody>(Method::DELETE, &format!("nodes/{}", id))
+    self.request::<EmptyBody>(Method::DELETE, &format!("nodes/{}", id))
       .await?;
     Ok(())
   }
