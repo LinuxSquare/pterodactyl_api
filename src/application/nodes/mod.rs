@@ -49,14 +49,14 @@ pub struct Node {
   pub memory: u32,
 
   /// The maximum memory overallocation (in bytes) of this node
-  pub memory_overallocate: u32,
+  pub memory_overallocate: i32,
 
   /// The disk-size (in bytes) of this node
   #[serde(rename = "disk")]
   pub disksize: u32,
 
   /// The maximum disk overallocation (in bytes) of this node
-  pub disk_overallocate: u32,
+  pub disk_overallocate: i32,
 
   /// The maximum upload size (in bytes) of this node
   pub upload_size: u32,
